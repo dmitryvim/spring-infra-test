@@ -15,16 +15,44 @@ repositories {
     mavenCentral()
 }
 
+sourceSets {
+    intTest {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+}
+
+configurations {
+    intTestImplementation.extendsFrom implementation
+    intTestRuntimeOnly.extendsFrom runtimeOnly
+}
+
+tasks.register('intTest', Test) {
+    description = 'Runs integration tests.'
+    group = 'verification'
+
+    testClassesDirs = sourceSets.intTest.output.classesDirs
+    classpath = sourceSets.intTest.runtimeClasspath
+    shouldRunAfter test
+}
+
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.5.3'
 
     testImplementation platform('org.junit:junit-bom:5.7.2')
 
-    testImplementation 'org.assertj:assertj-core:3.6.1'
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.assertj:assertj-core:3.20.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
+
+    intTestImplementation 'org.assertj:assertj-core:3.20.2'
+    intTestImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
+    intTestImplementation 'org.springframework.boot:spring-boot-starter-test:2.5.3'
 }
 
 test {
+    useJUnitPlatform()
+}
+
+intTest {
     useJUnitPlatform()
 }
