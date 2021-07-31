@@ -1,0 +1,11 @@
+services:
+
+  database:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: dima
+      POSTGRES_PASSWORD: dima
+      POSTGRES_DB: dima
+    ports:
+      - 5432:5432
