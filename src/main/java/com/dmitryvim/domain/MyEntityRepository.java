@@ -1,13 +1,11 @@
 package com.dmitryvim.domain;
 
-import org.springframework.lang.Nullable;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
-public interface MyEntityRepository {
+@Repository
+public interface MyEntityRepository extends CrudRepository<MyEntity, UUID> {
 
-    void add(MyEntity entity);
-
-    @Nullable
-    MyEntity get(UUID id);
 }

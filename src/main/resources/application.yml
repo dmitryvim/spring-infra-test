@@ -5,3 +5,5 @@ spring:
     url: jdbc:postgresql://localhost:5432/dima
     username: dima
     password: dima
+  liquibase:
+    changeLog: "classpath:db/changeset.yaml"

@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
-import java.util.Optional;
+import javax.transaction.Transactional;
 import java.util.UUID;
 
 @RestController
@@ -20,26 +19,27 @@ public class MyEntityResource {
 
     @GetMapping(value = "/ent/{id}")
     public ResponseEntity<MyEntityData> getData(@PathVariable("id") UUID id) {
-        var entity = entityRepository.get(id);
-        return ResponseEntity.of(Optional.ofNullable(entity)
+        var entity = entityRepository.findById(id)
                 .map(e -> MyEntityData.builder()
-                .id(e.getId())
-                .name(e.getName())
-                .value(e.getValue())
-                .build()));
+                        .id(e.getId())
+                        .name(e.getName())
+                        .value(e.getValue())
+                        .build());
+        return ResponseEntity.of(entity);
     }
 
     @PostMapping("/ent")
+    @Transactional
     public void add(@RequestBody MyEntityData data) {
-        var entity = entityRepository.get(data.getId());
-        if (entity != null) {
-            throw new IllegalArgumentException("Already exists");
-        }
-        entityRepository.add(MyEntity.builder()
-                .id(data.getId())
-                .version(0)
-                .name(data.getName())
-                .value(data.getValue())
-                .build());
+        entityRepository.findById(data.getId()).ifPresentOrElse(
+                __ -> {
+                    throw new IllegalArgumentException("Already exists");
+                },
+                () -> entityRepository.save(MyEntity.builder()
+                        .id(data.getId())
+//                .version(0)
+                        .name(data.getName())
+                        .value(data.getValue())
+                        .build()));
     }
 }

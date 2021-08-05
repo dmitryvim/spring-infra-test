@@ -1,0 +1,3 @@
+databaseChangeLog:
+  - include:
+      file: db/migration/20210805_01_myentity.yaml

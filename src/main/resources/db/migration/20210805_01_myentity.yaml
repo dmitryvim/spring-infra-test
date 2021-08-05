@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20210805_01_myentity
+      author: dmitryvim
+      changes:
+        - createTable:
+            tableName: my_entity
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+              - column:
+                  name: name
+                  type: varchar
+              - column:
+                  name: value
+                  type: int

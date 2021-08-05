@@ -1,25 +1,29 @@
 package com.dmitryvim.domain;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NonNull;
+import lombok.*;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.UUID;
 
 @Builder
-@EqualsAndHashCode
-@Getter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity(name = "my_entity")
 public class MyEntity {
 
     @NonNull
-    private final UUID id;
+    @Id
+    private UUID id;
 
     @NonNull
-    private final int version;
+    @Column(name = "name")
+    private String name;
 
-    @NonNull
-    private final String name;
-    private final int value;
+    @Column(name = "value")
+    private int value;
 
 }
